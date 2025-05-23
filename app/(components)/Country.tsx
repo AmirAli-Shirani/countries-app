@@ -1,26 +1,35 @@
+"use client"
 import React from 'react';
 import Image from 'next/image';
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 interface Country {
     title: string,
-    image: any,
+    image: string,
     description: string,
     population: number,
     region: string,
     href: string,
+    country: object,
 }
 
-const Country: React.FC<Country> = ({title, image, description, population, region , href}) => {
+
+const Country: React.FC<Country> = ({ title, image, description, population, region, href, country }) => {
+    const router = useRouter();
+
+    const handleClick = (e: React.MouseEvent) => {
+        e.preventDefault();
+        localStorage.setItem("selectedCountry", JSON.stringify(country));
+        router.push(href);
+    };
+
     return (
-        <article className="bg-gray-600/70 rounded-2xl hover:scale-110 duration-300 shadow-lg z-20
-        hover:shadow-2xl ">
-            <Link href={href}>
-
-                <Image src={image} alt={title} className="object-cover w-full rounded-2xl" width={250} height={250}/>
-            </Link>
+        <article
+            onClick={handleClick}
+            className="bg-gray-600/70 rounded-2xl hover:scale-110 duration-300 shadow-lg z-20 hover:shadow-2xl cursor-pointer"
+        >
+            <Image src={image} alt={title} className="object-cover w-full rounded-2xl" width={300} height={300} />
             <div className="p-3">
-
                 <h1 className="text-4xl font-bold">{title}</h1>
                 <h2 className="text-2xl font-semibold">{region}</h2>
                 <h3 className="text-xl font-semibold">{population}</h3>
@@ -29,5 +38,4 @@ const Country: React.FC<Country> = ({title, image, description, population, regi
         </article>
     );
 };
-
-export default Country;
+export default Country

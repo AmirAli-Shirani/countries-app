@@ -8,7 +8,7 @@ const navItems = [
     {label: 'Home', href: '/'},
     {label: 'Blogs', href: '/blogs'},
     {label: 'About', href: '/about'},
-    {label: 'Page', href: '/contact'},
+    {label: 'Contact', href: '/contact'},
 ]
 
 const Navbar = () => {

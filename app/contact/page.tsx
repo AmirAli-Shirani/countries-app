@@ -4,13 +4,13 @@ import Service from "@/app/contact/Service";
 
 const services = [
     {
-        icon: <FaMobileScreenButton/>,
-        title: "Web and Mobile App Development",
-        text: "Custom made apps using hybrid development via React Native or Ionic. Need a comprehensive back end? No problems. In App Payments? Sure thing. Push Notifications. Yup. We do it all."
-    }, {
         icon: <FaBolt/>,
         title: "Rapid Prototyping",
         text: "We love smashing code out real quick to test an idea. Need to put your startup idea through it's paces? We do UX real good."
+    }, {
+        icon: <FaMobileScreenButton/>,
+        title: "Web and Mobile App Development",
+        text: "Custom made apps using hybrid development via React Native or Ionic. Need a comprehensive back end? No problems. In App Payments? Sure thing. Push Notifications. Yup. We do it all."
     }, {
         icon: <FaCode/>,
         title: "Technical consulting",
@@ -20,34 +20,37 @@ const services = [
 const Page = () => {
     return (
         <section className="z-10">
-            <h1 className="lg:text-4xl text-2xl text-center my-20">Services for today, ready for tomorrow</h1>
+            <h1 className="text-center text-3xl md:text-5xl font-bold tracking-tight text-gray-300 mt-10 mb-16">
+                Services for today, <br className="hidden md:block"/> ready for tomorrow
+            </h1>
             <div className="grid grid-cols-1 space-each lg:grid-cols-3 gap-10">
                 {services.map((service, index) => (
                     <Service key={index} title={service.title} icon={service.icon}>{service.text}</Service>
                 ))}
             </div>
-            <div className="bg-emerald-950/75 p-4 mt-5">
-                <h2 className="text-3xl font-semibold my-10 text-center">Get in touch</h2>
-                <form className="container mx-auto space-y-8">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="bg-emerald-950/90 p-10 mt-16 rounded-xl shadow-xl text-white">
+                <h2 className="text-4xl font-bold mb-10 text-center">Get in touch</h2>
+                <form className="max-w-4xl mx-auto space-y-6">
+                    <div className="grid md:grid-cols-2 gap-6">
                         <input type="text" placeholder="Name"
-                               className="w-full border border-gray-400 py-2 px-3 rounded-lg"/>
+                               className="w-full p-3 rounded-md bg-emerald-800 text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-white"/>
                         <input type="email" placeholder="Email"
-                               className="w-full border border-gray-400 py-2 px-3 rounded-lg"/>
-                        <input type="text" placeholder="Number"
-                               className="w-full border border-gray-400 py-2 px-3 rounded-lg"/>
+                               className="w-full p-3 rounded-md bg-emerald-800 text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-white"/>
+                        <input type="text" placeholder="Phone Number"
+                               className="w-full p-3 rounded-md bg-emerald-800 text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-white md:col-span-2"/>
                     </div>
                     <textarea placeholder="Enter your message"
-                              className="w-full border border-gray-400 py-2 px-3 rounded-md" rows="6"/>
+                              className="w-full p-3 rounded-md bg-emerald-800 text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-white"
+                              rows={6}/>
                     <div className="text-center">
                         <button
-                            className="bg-white text-gray-800 p-3 rounded-lg hover:bg-transparent/70
-                            hover:text-white hover:border transition-all  duration-300">SEND
-                            MESSAGE
+                            className="bg-white text-emerald-900 font-bold px-6 py-3 rounded-lg hover:bg-emerald-800 hover:text-white border border-white transition-all duration-300">
+                            SEND MESSAGE
                         </button>
                     </div>
                 </form>
             </div>
+
         </section>
     );
 };
