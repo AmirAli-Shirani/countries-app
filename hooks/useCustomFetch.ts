@@ -13,14 +13,3 @@ export const useCustomFetch = () => {
         },
     });
 };
-
-// export const usePost = <T = unknown, U = unknown>(
-//     endpoint: string
-// ) => {
-//     return useMutation<T, unknown, U>({
-//         mutationFn: async (data: U) => {
-//             const res = await axios.post(`${baseUrl}/${endpoint}`, data);
-//             return res.data;
-//         },
-//     });
-// };

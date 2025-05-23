@@ -1,62 +1,71 @@
-"use client";
-import { useEffect, useState } from "react";
-import Image from "next/image";
+'use client';
+import InfoItem from './InfoItem';
+import {useParams} from 'next/navigation';
+import Image from 'next/image';
+import {useCustomFetch} from "@/hooks/useCustomFetch";
+import React from "react";
 
 const CountryDetailPage = () => {
-    const [country, setCountry] = useState(null);
+    const {name: cca3} = useParams<{ cca3: string }>();
+    const {data, isLoading, error} = useCustomFetch();
 
-    useEffect(() => {
-        const saved = localStorage.getItem("selectedCountry");
-        if (saved) {
-            setCountry(JSON.parse(saved));
-        }
-    }, []);
+    if (isLoading) return <p className="text-center mt-20 text-xl">Loading...</p>;
+    if (error || !data) return <p className="text-center mt-20 text-red-500">Failed to load countries.</p>;
 
-    if (!country) return <p>Loading data or no country selected</p>;
+    const country = data.find((c) => c.cca3?.toLowerCase() === cca3.toLowerCase());
+    if (!country) return <p className="text-center mt-20 text-gray-700 dark:text-gray-300">Country not found.</p>;
 
     return (
-        <section className="max-w-6xl mx-auto p-6 bg-white dark:bg-gray-900 rounded-2xl shadow-lg mt-10">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
-                {/* Flag */}
-                <div className="w-full h-full">
+        <section className="max-w-7xl mx-auto p-8 bg-white dark:bg-gray-900 rounded-3xl shadow-xl mt-12">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-start">
+                <div className="overflow-hidden rounded-2xl shadow-lg border border-gray-300 dark:border-gray-700">
                     <Image
                         src={country.flags.svg}
                         alt={`Flag of ${country.name.common}`}
-                        width={600}
-                        height={400}
-                        className="w-full h-auto rounded-lg border"
+                        width={640}
+                        height={420}
+                        className="w-full h-auto object-cover"
+                        priority
                     />
                 </div>
 
-                {/* Info */}
-                <div className="text-gray-900 dark:text-white space-y-4">
-                    <h1 className="text-3xl font-bold">{country.name.official}</h1>
-                    <p className="text-lg text-gray-600 dark:text-gray-300">
-                        <span className="font-semibold">Common Name: </span>
-                        {country.name.common}
+                <div className="text-gray-900 dark:text-white space-y-6">
+                    <h1 className="text-4xl font-extrabold tracking-tight">{country.name.official}</h1>
+                    <p className="text-xl text-gray-600 dark:text-gray-400">
+                        <span className="font-semibold">Common Name: </span> {country.name.common}
                     </p>
 
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <p><strong>Region:</strong> {country.region}</p>
-                        <p><strong>Subregion:</strong> {country.subregion}</p>
-                        <p><strong>Capital:</strong> {country.capital?.join(", ")}</p>
-                        <p><strong>Population:</strong> {country.population.toLocaleString()}</p>
-                        <p><strong>Area:</strong> {country.area.toLocaleString()} km²</p>
-                        <p><strong>Independent:</strong> {country.independent ? "Yes" : "No"}</p>
-                        <p><strong>Time Zone:</strong> {country.timezones.join(", ")}</p>
-                        <p><strong>Currency:</strong> {Object.values(country.currencies).map(c => `${c.name} (${c.symbol})`).join(", ")}</p>
-                        <p><strong>Languages:</strong> {Object.values(country.languages).join(", ")}</p>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                        <InfoItem label="Region" value={country.region}/>
+                        <InfoItem label="Subregion" value={country.subregion}/>
+                        {country.capital && country.capital.length > 0 && (
+                            <InfoItem label="Capital" value={country.capital.join(", ")}/>
+                        )}
+                        <InfoItem label="Population" value={country.population.toLocaleString()}/>
+                        <InfoItem label="Area" value={`${country.area.toLocaleString()} km²`}/>
+                        <InfoItem label="Independent" value={country.independent ? "✅ Yes" : "❌ No"}/>
+                        <InfoItem label="Timezones" value={country.timezones.join(", ")}/>
+                        {country.currencies && (
+                            <InfoItem
+                                label="Currencies"
+                                value={Object.values(country.currencies)
+                                    .map((c) => `${c.name} (${c.symbol})`)
+                                    .join(", ")}
+                            />
+                        )}
+                        {country.languages && (
+                            <InfoItem label="Languages" value={Object.values(country.languages).join(", ")}/>
+                        )}
                     </div>
 
-                    {/* Map link */}
                     <div>
                         <a
                             href={country.maps.googleMaps}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="inline-block mt-4 px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-full shadow"
+                            className="inline-block mt-6 px-8 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-semibold rounded-xl shadow-lg transition duration-300"
                         >
-                            View on Google Maps
+                            🌍 View on Google Maps
                         </a>
                     </div>
                 </div>
@@ -64,5 +73,6 @@ const CountryDetailPage = () => {
         </section>
     );
 };
+
 
 export default CountryDetailPage;
