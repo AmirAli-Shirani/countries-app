@@ -3,7 +3,7 @@ import "./globals.css";
 import React from "react";
 import ReactQueryProvider from "@/app/ReactQueryProvider";
 import {ReactQueryDevtools} from "@tanstack/react-query-devtools";
-import {Navbar} from "@/app/(components)";
+import {Footer, Navbar} from "@/app/(components)";
 
 export const metadata: Metadata = {
     title: "Country App",
@@ -20,6 +20,7 @@ export default function RootLayout({children}: Readonly<{
             <Navbar/>
             {children}
             <ReactQueryDevtools initialIsOpen={false}/>
+            <Footer/>
         </ReactQueryProvider>
         </body>
         </html>

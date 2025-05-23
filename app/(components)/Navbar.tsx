@@ -8,7 +8,7 @@ const navItems = [
     {label: 'Home', href: '/'},
     {label: 'Blogs', href: '/blogs'},
     {label: 'About', href: '/about'},
-    {label: 'Contact', href: '/contact'},
+    {label: 'Page', href: '/contact'},
 ]
 
 const Navbar = () => {
@@ -24,8 +24,8 @@ const Navbar = () => {
         return () => window.removeEventListener("resize", handleResize);
     }, []);
     return (
-        <header className="dark:bg-darkNav p-4 ">
-            <nav className="container mx-auto flex items-center justify-between">
+        <header className="dark:bg-darkNav ">
+            <nav className="space-each py-5 flex items-center justify-between">
                 <h1 className="text-xl font-bold">My Country App</h1>
                 <ul className="hidden lg:flex justify-between gap-8">
                     {navItems.map((item, index) => (

@@ -1,8 +1,8 @@
-import CountryList from "@/app/(components)/CountryList";
+import {CountryList} from "@/app/(components)";
 
 export default function Home() {
     return (
-        <div className="px-10">
+        <div className="space-each my-10">
             <CountryList/>
         </div>
     );
