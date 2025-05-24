@@ -2,7 +2,7 @@
 import {IoMenu} from "react-icons/io5";
 import {usePathname} from 'next/navigation'
 import {useEffect, useState} from "react";
-import {NavLink} from "@/app/(components)/index";
+import {NavLink, SearchInput} from "@/app/(components)";
 
 const navItems = [
     {label: 'Home', href: '/'},
@@ -12,8 +12,10 @@ const navItems = [
 ]
 
 const Navbar = () => {
+
     const pathname = usePathname()
     const [menuOpen, setMenuOpen] = useState(false)
+
     useEffect(() => {
         const handleResize = () => {
             if (window.innerWidth >= 1024) {
@@ -23,6 +25,8 @@ const Navbar = () => {
         window.addEventListener("resize", handleResize);
         return () => window.removeEventListener("resize", handleResize);
     }, []);
+
+
     return (
         <header className="dark:bg-darkNav ">
             <nav className="space-each py-5 flex items-center justify-between">
@@ -33,16 +37,7 @@ const Navbar = () => {
                     ))}
                 </ul>
                 <div className="hidden lg:flex">
-                    <form className="space-x-3">
-
-                        <input type="text" className="px-3 py-2 rounded-xl border dark:border-gray-500"
-                               name="countries" placeholder="Search Country..."/>
-                        <select name="filter" className="px-3 py-2 rounded-xl border dark:border-gray-500">
-                            <option value="" className="px-3 py-2 rounded-xl border dark:border-gray-500">filter by
-                                region
-                            </option>
-                        </select>
-                    </form>
+                        <SearchInput />
                 </div>
                 <button
                     className="text-2xl lg:hidden"
@@ -51,25 +46,15 @@ const Navbar = () => {
                 </button>
             </nav>
             {menuOpen && (
-                <div className="lg:hidden flex justify-between container mx-auto mt-8 items-center bg-darkNav">
-                    <ul className="flex flex-col gap-4">
+                <div className="lg:hidden flex justify-between px-5 space-each pb-5 pt-3 items-center bg-darkNav">
+                    <ul className="flex flex-col gap-4 ">
                         {navItems.map((item, index) => (
                             <NavLink key={index} href={item.href} label={item.label} pathname={pathname}/>
 
                         ))}
                     </ul>
-                    <div>
-                        <form className="gap-4 flex flex-col">
-
-                            <input type="text" className="px-3 py-2 rounded-xl border dark:border-gray-500"
-                                   name="countries" placeholder="Search Country..."/>
-                            <select name="filter" className="px-3 py-2 rounded-xl border dark:border-gray-500">
-                                <option value="" className="px-3 py-2 rounded-xl border dark:border-gray-500">filter
-                                    by
-                                    region
-                                </option>
-                            </select>
-                        </form>
+                    <div className="gap-4 flex flex-col relative">
+                           <SearchInput />
                     </div>
                 </div>
             )}

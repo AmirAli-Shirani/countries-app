@@ -1,34 +1,55 @@
-"use client"
-import {Country} from "@/app/(components)/index";
+"use client";
+import {Country, FilteredCountries} from "@/app/(components)/index";
 import {useCustomFetch} from "@/hooks/useCustomFetch";
-
+import {CountryType} from "@/helpers/countryType";
+import {useMemo, useState} from "react";
 
 const CountryList = () => {
-    const {data, isLoading, error} = useCustomFetch();
+    const {data, isLoading, error} = useCustomFetch() as {
+        data: CountryType[] | null;
+        isLoading: boolean;
+        error: Error | null;
+    };
+
+    const [selectedRegion, setSelectedRegion] = useState("");
+    const [selectedSubregion, setSelectedSubregion] = useState("");
+
+    const regions = useMemo(
+        () => Array.from(new Set(data?.map((c) => c.region).filter(Boolean))),
+        [data]
+    );
+    const subregions = useMemo(() => {
+        const filtered = selectedRegion
+            ? data?.filter((c) => c.region === selectedRegion)
+            : data;
+        return Array.from(new Set(filtered?.map((c) => c.subregion).filter(Boolean)));
+    }, [data, selectedRegion]);
+
+    const filteredCountries = useMemo(() => {
+        return data
+            ?.filter((c) => (selectedRegion ? c.region === selectedRegion : true))
+            .filter((c) => (selectedSubregion ? c.subregion === selectedSubregion : true));
+    }, [data, selectedRegion, selectedSubregion]);
+
     if (isLoading) return <p>Loading...</p>;
     if (error) return <p>Error fetching countries</p>;
 
-    const description = "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores at aut delectus facere inventore iste molestias nostrum perspiciatis sapiente suscipit!"
     return (
+        <section className="max-w-7xl mx-auto p-4">
+            <FilteredCountries
+                regions={regions}
+                selectedRegion={selectedRegion}
+                setSelectedRegion={setSelectedRegion}
+                subregions={subregions}
+                selectedSubregion={selectedSubregion}
+                setSelectedSubregion={setSelectedSubregion}
+            />
 
-        <section className="grid mt-5 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {data.map((country, index) => (
-                <Country
-                    key={index}
-                    title={country.name.common}
-                    image={country.flags.svg}
-                    description="..." // می‌تونی مثل قبلی متنی ساده یا داینامیک بذاری
-                    population={country.population}
-                    cca3={country.cca3}
-                    region={country.region}
-                    capital={country.capital}
-                    languages={country.languages}
-                    flagEmoji={country.flag}  // 👈 ایموجی پرچم
-                    area={country.area}
-                    mapsLink={country.maps?.googleMaps}
-                />
-            ))}
-
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                {filteredCountries?.map((country, index) => (
+                    <Country key={index} {...country} />
+                ))}
+            </div>
         </section>
     );
 };
