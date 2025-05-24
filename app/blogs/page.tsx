@@ -2,7 +2,7 @@ import image from "@/public/assets/images/background_pompadour.jpg";
 import Blog from "@/app/blogs/Blog";
 import blogs from "@/data/blogs";
 
-const About = () => {
+const Blogs = () => {
     return (
         <section
             className="flex justify-center  bg-cover bg-fixed"
@@ -23,4 +23,4 @@ const About = () => {
     );
 };
 
-export default About;
+export default Blogs;
